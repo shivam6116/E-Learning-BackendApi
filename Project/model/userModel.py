@@ -1,6 +1,6 @@
 import json
 import mysql.connector
-
+from flask import make_response
 
 class userModel():
     def __init__(self) -> None:
@@ -25,28 +25,32 @@ class userModel():
         self.cur.execute("SELECT * FROM USERS")
         result = self.cur.fetchall()
         if(len(result)>0):
-            return json.dumps(result)
+            return {"payload":result}
+
+            ''' 
+            json.dumps(result): this return the result in list formate
+            '''
         else:
-            return "No data"
+            return { "Message":"No data"}
 
     def add_user(self,data):
         self.cur.execute(f"INSERT INTO users(name,email,phone,role,password) VALUES('{data['name']}','{data['email']}','{data['phone']}','{data['role']}','{data['password']}'   )")
+        return { "Message":"User Added"}
         
-        return "User Added"
         
     def update_user(self,data):
         # print(data)
         self.cur.execute(f"UPDATE users SET name='{data['name']}' ,email='{data['email']}' ,phone='{data['phone']}' ,role ='{data['role']}' ,password='{data['password']}' WHERE id={data['id']}")
         if self.cur.rowcount>0:
-            return "User Updated"
+            return { "Message":"User Updated"}
         else:
-            return "nothing to update"
+            return { "Message":"nothing to update"}
     
     def delete_user(self,id):
         # print(data)
         self.cur.execute(f"DELETE FROM users WHERE id={id}")
         if self.cur.rowcount>0:
-            return "User Deleted"
+            return { "Message":"User Deleted"}
         else:
-            return "nothing to nothingf to delete"
+            return { "Message":"nothing to nothingf to delete"}
     
