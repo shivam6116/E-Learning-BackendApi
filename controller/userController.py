@@ -1,7 +1,9 @@
+from ast import Return
 from flask import Blueprint
 from model.article import article
 from model.userModel import userModel
 from flask import request ,jsonify
+from datetime import datetime
 
 obj=userModel()
 
@@ -42,4 +44,25 @@ def userPagination(limit ,page):
     return obj.pagination_user(limit ,page)
 
 
+@user_controller.route('/users/<uid>/upload/avatar',methods=["PUT"])
+def uploadavtar(uid):
+    '''
+    In postman , under body section we get form data option in that we get option to upload file
+     bydefault it is text
+    ''' 
+    file = request.files['avatar']
+    # 
+    uniqueName=str(datetime.now().timestamp()).replace(".","")
+    filesplit= file.filename.split(".")
+    extension=filesplit[len(filesplit)-1]
+
+    file.save(f"uploads/{uniqueName}.{extension}")
+    path=f"uploads/{uniqueName}.{extension}"
+    return obj.addUserAvatar(uid,path)
+
+
+
+@user_controller.route('/users/login',methods=["POST"])
+def userLogIn():
+    return "login"
 

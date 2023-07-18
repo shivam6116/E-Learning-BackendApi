@@ -1,4 +1,5 @@
 import json
+from turtle import done
 import mysql.connector
 from flask import make_response
 
@@ -88,3 +89,8 @@ class userModel():
             '''
         else:
             return make_response({ "Message":"No data"},204)
+
+
+    def addUserAvatar(self,uid,path):
+        self.cur.execute(f"UPDATE users SET avatar= '{path}' where id={uid}")
+        return "done"
