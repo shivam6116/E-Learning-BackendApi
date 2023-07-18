@@ -24,8 +24,9 @@ class userModel():
         self.cur.execute("SELECT * FROM USERS")
         result = self.cur.fetchall()
         if(len(result)>0):
-            return make_response({"payload":result},200)
-
+            res=make_response({"payload":result},200) # sending response object
+            res.headers['Access-Control-Allow-Origin']="*"    # to allow cross plateform response
+            return res
             ''' 
             json.dumps(result): this return the result in list formate
             '''
@@ -46,10 +47,44 @@ class userModel():
             return make_response({ "Message":"nothing to update"},202)
     
     def delete_user(self,id):
-        # print(data)
         self.cur.execute(f"DELETE FROM users WHERE id={id}")
         if self.cur.rowcount>0:
             return make_response({ "Message":"User Deleted"},200)
         else:
             return make_response({ "Message":"nothing to nothingf to delete"},202)
     
+
+    def patch_user(self,data,id):
+        query="UPDATE users SET "
+        for key in data:
+            query= query + f" {key} = '{data[key]}' ,"
+            # print()
+        
+        query=query[:-1]
+        query+= f"WHERE id={id}"
+        print(query)
+
+        self.cur.execute(query)
+        if self.cur.rowcount>0:
+            return make_response({ "Message":"User Updated Using Patch"},200)
+        else:
+            return make_response({ "Message":"nothing to nothingf to delete"},202)
+
+    def pagination_user(self,limit ,page):
+        limit=int(limit)
+        page=int(page)
+        start=(page*limit)-limit
+
+        query=f"SELECT * FROM users LIMIT {start},{limit}"
+
+        self.cur.execute(query)
+        result = self.cur.fetchall()
+        if(len(result)>0):
+            res=make_response({"payload":result},200) # sending response object
+            res.headers['Access-Control-Allow-Origin']="*"    # to allow cross plateform response
+            return res
+            ''' 
+            json.dumps(result): this return the result in list formate
+            '''
+        else:
+            return make_response({ "Message":"No data"},204)

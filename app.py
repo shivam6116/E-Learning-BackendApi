@@ -1,8 +1,7 @@
-
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from controller.userController import user_controller
 from controller.productController import productController
-
 
 
 app = Flask(__name__)

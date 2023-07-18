@@ -1,4 +1,5 @@
 from flask import Blueprint
+from model.article import article
 from model.userModel import userModel
 from flask import request ,jsonify
 
@@ -29,5 +30,16 @@ def updateUser():
 @user_controller.route('/users/deleteuser/<id>',methods=["DELETE"])
 def deleteUser(id):
     return obj.delete_user(id)
+
+
+@user_controller.route('/users/patchuser/<id>',methods=["PATCH"])
+def patchUser(id):
+    return obj.patch_user(request.form , id)
+
+
+@user_controller.route('/users/getall/limit/<limit>/page/<page>',methods=["GET"])
+def userPagination(limit ,page):
+    return obj.pagination_user(limit ,page)
+
 
 
