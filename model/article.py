@@ -10,7 +10,7 @@ class article():
             self.con.autocommit=True
             self.cur=self.con.cursor(dictionary=True)
 
-            self.cur.execute("CREATE TABLE article (  id INT NOT NULL AUTO_INCREMENT,  username VARCHAR(255) NOT NULL,  email VARCHAR(255) NOT NULL,  PRIMARY KEY (id))")
+            # self.cur.execute("CREATE TABLE article (  id INT NOT NULL AUTO_INCREMENT,  username VARCHAR(255) NOT NULL,  email VARCHAR(255) NOT NULL,  PRIMARY KEY (id))")
 
         except:
             print("some error")

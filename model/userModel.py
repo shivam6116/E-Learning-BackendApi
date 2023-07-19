@@ -1,13 +1,12 @@
 import json
 from turtle import done
 import mysql.connector
+from datetime import datetime, timedelta
 from flask import make_response
+import jwt
 
 class userModel():
     def __init__(self) -> None:
-        
-        #connection code
-        print("creating")
         try:
             self.con=mysql.connector.connect(host="localhost",username="root",password="P@ssword191394",database="flask_project")
             self.con.autocommit=True
@@ -16,9 +15,6 @@ class userModel():
         except:
             print("some error")
         
-
-    def user_signup_model(self):
-        return "this is sign up class"
 
     def getUsers(self):
         
@@ -35,13 +31,13 @@ class userModel():
             return make_response({ "Message":"No data"},204)
 
     def add_user(self,data):
-        self.cur.execute(f"INSERT INTO users(name,email,phone,role,password) VALUES('{data['name']}','{data['email']}','{data['phone']}','{data['role']}','{data['password']}'   )")
+        self.cur.execute(f"INSERT INTO users(name,email,phone,password) VALUES('{data['name']}','{data['email']}','{data['phone']}','{data['password']}'   )")
         return make_response({ "Message":"User Added"},201)
         
         
     def update_user(self,data):
         # print(data)
-        self.cur.execute(f"UPDATE users SET name='{data['name']}' ,email='{data['email']}' ,phone='{data['phone']}' ,role ='{data['role']}' ,password='{data['password']}' WHERE id={data['id']}")
+        self.cur.execute(f"UPDATE users SET name='{data['name']}' ,email='{data['email']}' ,phone='{data['phone']}' ,password='{data['password']}' WHERE id={data['id']}")
         if self.cur.rowcount>0:
             return make_response({ "Message":"User Updated"},201)
         else:
@@ -94,3 +90,22 @@ class userModel():
     def addUserAvatar(self,uid,path):
         self.cur.execute(f"UPDATE users SET avatar= '{path}' where id={uid}")
         return "done"
+
+
+    def user_login(self,data):
+        self.cur.execute(f"SELECT id ,email , phone, avatar, roll_id FROM users WHERE email='{data['email']}' and password ='{data['password']}'")
+        result =self.cur.fetchall()
+        userData=result[0]
+
+
+        expTime= datetime.now() +timedelta(minutes=15)
+        expEpochTime=int(expTime.timestamp())
+
+        payload={
+            "payload":userData,
+            "exp":expEpochTime
+        }
+
+        token=jwt.encode(payload, "shivam", algorithm="HS256")
+
+        return make_response({"token":token})

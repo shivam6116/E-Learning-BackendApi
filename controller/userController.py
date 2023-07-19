@@ -1,6 +1,4 @@
-from ast import Return
 from flask import Blueprint
-from model.article import article
 from model.userModel import userModel
 from flask import request ,jsonify
 from datetime import datetime
@@ -22,7 +20,6 @@ def get_all_users():
 @user_controller.route('/users/adduser',methods=["POST"])
 def addUser():
     # "request form help us to get data from server sidre to us"
-    print()
     return obj.add_user(request.form)
 
 @user_controller.route('/users/updateuser',methods=["PUT"])
@@ -64,5 +61,5 @@ def uploadavtar(uid):
 
 @user_controller.route('/users/login',methods=["POST"])
 def userLogIn():
-    return "login"
+    return obj.user_login(request.form)
 
