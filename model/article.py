@@ -6,7 +6,7 @@ class article():
         #connection code
         print("creating")
         try:
-            self.con=mysql.connector.connect(host="localhost",username="root",password="P@ssword191394",database="flask_project")
+            self.con=mysql.connector.connect(host="localhost",username="root",password="abc191394",database="project")
             self.con.autocommit=True
             self.cur=self.con.cursor(dictionary=True)
 

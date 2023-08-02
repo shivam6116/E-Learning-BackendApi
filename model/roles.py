@@ -6,7 +6,7 @@ class RolesModel():
         
         #connection code
         try:
-            self.con=mysql.connector.connect(host="localhost",username="root",password="P@ssword191394",database="flask_project")
+            self.con=mysql.connector.connect(host="localhost",username="root",password="abc191394",database="project")
             self.con.autocommit=True
             self.cur=self.con.cursor(dictionary=True)
             print("connection Successful")
@@ -30,7 +30,7 @@ class RolesModel():
 
     def add_roles(self,data):
         self.cur.execute(f"INSERT INTO roles(title) VALUES('{data['title']}')")
-        return make_response({ "Message":"User Added"},201)
+        return make_response({ "Message":"User Added"},201) 
     
        
     def update_roles(self,data):

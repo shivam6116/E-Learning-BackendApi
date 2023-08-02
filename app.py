@@ -17,9 +17,9 @@ app.register_blueprint(epController)
 app.register_blueprint(accController)
 
 
-@app.route("/home")
+@app.route("/")
 def home():
-    return "this is home page"
+    return "Welcome To Flask RestFul APIs"
 
 
 if __name__ == '__main__':

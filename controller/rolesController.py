@@ -8,7 +8,7 @@ roleController=Blueprint('roleController', __name__)
 
 
 @roleController.route('/roles/allroles')
-def get_roles():
+def getRoles():
     return rolesObj.getAllRoles()
 
 
